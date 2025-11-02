@@ -40,19 +40,16 @@ const isPostLoaded = computed(() => {
     return post.value.postId > 0;
 });
 
-onMounted(async () => {
-    postId.value = Number(route.params.postId);
-    await loadPost();
-});
-
 watch(
     () => route.params.postId,
-    async (newPostId) => {
-        if (newPostId) {
-            postId.value = Number(newPostId);
-            await loadPost();
+    (newPostId) => {
+        const newPostIdNum = Number(newPostId);
+        if (newPostId && postId.value !== newPostIdNum) {
+            postId.value = newPostIdNum;
+            loadPost();
         }
-    }
+    },
+    { immediate: true }
 );
 
 async function loadPost() {
