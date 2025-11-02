@@ -15,4 +15,8 @@ export default defineConfig({
         }),
         vue(),
     ],
+    server: {
+        host: "localhost",
+        port: 1000,
+    },
 });
