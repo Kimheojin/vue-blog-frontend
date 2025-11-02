@@ -25,13 +25,13 @@
   },
   "devDependencies": {
     "@types/dompurify": "^3.2.0",
+    "@types/marked": "^6.0.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
     "typescript": "~5.7.2",
     "unplugin-auto-import": "^19.1.1",
     "unplugin-vue-components": "^28.4.1",
     "vite": "^6.2.0",
-    "vite-plugin-sitemap": "^0.8.2",
     "vue-tsc": "^2.2.4"
   }
 }
