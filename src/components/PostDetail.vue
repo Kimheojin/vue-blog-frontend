@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, nextTick } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { container } from "tsyringe";
 import { marked } from "marked";
