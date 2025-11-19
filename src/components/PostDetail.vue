@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, nextTick } from "vue";
+import { ref, watch, computed, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { container } from "tsyringe";
 import { marked } from "marked";
@@ -119,6 +119,19 @@ function goBack() {
                             formatDate(post.regDate)
                         }}</span>
                     </div>
+                    <div
+                        v-if="post.tagList && post.tagList.length"
+                        class="post-tags"
+                    >
+                        <el-tag
+                            v-for="tag in post.tagList"
+                            :key="`detail-tag-${tag.tagId}`"
+                            size="large"
+                            effect="dark"
+                        >
+                            {{ tag.tagName }}
+                        </el-tag>
+                    </div>
                 </div>
 
                 <!-- GitHub 마크다운 스타일 적용 -->
@@ -194,6 +207,13 @@ function goBack() {
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
 }
 
 .category-tag {

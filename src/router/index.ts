@@ -18,6 +18,7 @@ import PostDetail from "../components/PostDetail.vue";
 import ImageDelete from "../views/admin/image/ImageDelete.vue";
 import ImageList from "../views/admin/image/ImageList.vue";
 import ImageUpload from "../views/admin/image/ImageUpload.vue";
+import TagAdmin from "../views/admin/tag/TagAdmin.vue";
 
 const routes = [
 
@@ -93,6 +94,10 @@ const routes = [
     {
         path: '/admin/image/upload',
         component: ImageUpload
+    },
+    {
+        path: '/admin/tag',
+        component: TagAdmin
     }
 ];
 

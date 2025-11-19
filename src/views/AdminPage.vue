@@ -66,6 +66,9 @@ function goToImageDelete() {
 function goToImageList() {
   router.push('/admin/image/list');
 }
+function goToTagManage() {
+  router.push('/admin/tag');
+}
 </script>
 
 <template>
@@ -105,6 +108,11 @@ function goToImageList() {
             <el-button plain @click="goToImageUpload">이미지 업로드</el-button>
             <el-button plain @click="goToImageList">이미지 리스트 조회</el-button>
             <el-button plain @click="goToImageDelete">이미지 삭제</el-button>
+          </div>
+
+          <div class="admin-actions">
+            <div class="admin-title">태그 관련</div>
+            <el-button plain @click="goToTagManage">태그 관리</el-button>
           </div>
 
 

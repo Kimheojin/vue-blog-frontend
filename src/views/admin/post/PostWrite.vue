@@ -23,6 +23,7 @@ const state = reactive({
 const categories = ref<Category[]>([]);
 const isLoading = ref(false);
 const isSubmitting = ref(false);
+const newTag = ref('');
 
 // 컴포넌트 마운트 시 인증 확인 및 카테고리 로드
 
@@ -81,6 +82,28 @@ function handleCancel() {
 
 function handleReset() {
   state.post = new PostRequest();
+  newTag.value = '';
+}
+
+function addTag() {
+  const tagName = newTag.value.trim();
+  if (!tagName) {
+    ElMessage.warning('태그를 입력해주세요.');
+    return;
+  }
+
+  const isDuplicate = state.post.tagList.some(tag => tag.tagName === tagName);
+  if (isDuplicate) {
+    ElMessage.warning('이미 추가된 태그입니다.');
+    return;
+  }
+
+  state.post.tagList.push({ tagName });
+  newTag.value = '';
+}
+
+function removeTag(index: number) {
+  state.post.tagList.splice(index, 1);
 }
 </script>
 <template>
@@ -129,6 +152,37 @@ function handleReset() {
             </el-select>
           </el-form-item>
 
+          <el-form-item label="태그" class="bold-text tags-form-item">
+            <div class="tag-input-wrapper">
+              <el-input
+                  v-model="newTag"
+                  placeholder="태그를 입력 후 Enter 또는 추가 버튼을 눌러주세요"
+                  clearable
+                  :disabled="isSubmitting"
+                  @keyup.enter.native="addTag"
+              />
+              <el-button
+                  type="success"
+                  plain
+                  :disabled="isSubmitting"
+                  @click="addTag"
+                  class="bold-text"
+              >
+                추가
+              </el-button>
+            </div>
+            <div v-if="state.post.tagList.length" class="tag-list">
+              <el-tag
+                  v-for="(tag, index) in state.post.tagList"
+                  :key="`${tag.tagName}-${index}`"
+                  closable
+                  @close="removeTag(index)"
+              >
+                {{ tag.tagName }}
+              </el-tag>
+            </div>
+          </el-form-item>
+
           <el-form-item label="내용" class="bold-text">
             <el-input
                 v-model="state.post.content"
@@ -172,6 +226,18 @@ function handleReset() {
   </div>
 </template>
 
-<style>
+<style scoped>
+.tag-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
 
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
 </style>

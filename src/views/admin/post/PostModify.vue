@@ -11,6 +11,7 @@ import type Category from "../../../entity/category/data/Category.ts";
 import type PostPageResponse from "../../../entity/post/response/PostPageResponse.ts";
 import {useAdminAuth} from "../../../composables/useAdminAuth.ts";
 import { useErrorHandler } from '../../../composables/useErrorHandler.ts';
+import TagRequest from "../../../entity/tag/request/TagRequest.ts";
 
 const { customHandleError } = useErrorHandler();
 
@@ -26,6 +27,7 @@ const selectedPost = ref<PostItem | null>(null);
 const isLoadingPosts = ref(false);
 const isLoadingCategories = ref(false);
 const isModifying = ref(false);
+const newTag = ref('');
 
 const currentPage = ref(0);
 const totalPages = ref(0);
@@ -75,6 +77,11 @@ function selectPost(post: PostItem) {
   state.post.content = post.content;
   state.post.categoryName = post.categoryName;
   state.post.postStatus = post.status;
+  state.post.tagList = (post.tagList || []).map((tag) => {
+    const tagRequest = new TagRequest();
+    tagRequest.tagName = tag.tagName;
+    return tagRequest;
+  });
 }
 
 async function handleModify() {
@@ -121,6 +128,7 @@ async function handlePageChange(page: number) {
 function backToPostList() {
   selectedPost.value = null;
   state.post = new ModifyPostRequest();
+  newTag.value = '';
 }
 
 function formatDate(dateString: string): string {
@@ -160,6 +168,29 @@ function getStatusColor(status: string): string {
 
 function goBack() {
   router.back();
+}
+
+function addTag() {
+  const tagName = newTag.value.trim();
+  if (!tagName) {
+    ElMessage.warning('태그명을 입력해주세요.');
+    return;
+  }
+
+  const isDuplicate = state.post.tagList.some(tag => tag.tagName === tagName);
+  if (isDuplicate) {
+    ElMessage.warning('이미 추가된 태그입니다.');
+    return;
+  }
+
+  const tagRequest = new TagRequest();
+  tagRequest.tagName = tagName;
+  state.post.tagList.push(tagRequest);
+  newTag.value = '';
+}
+
+function removeTag(index: number) {
+  state.post.tagList.splice(index, 1);
 }
 </script>
 <template>
@@ -217,6 +248,20 @@ function goBack() {
                 <div class="post-content-preview">
                   {{ post.content.substring(0, 100) }}{{ post.content.length > 100 ? '...' : '' }}
                 </div>
+
+                <div
+                    v-if="post.tagList && post.tagList.length"
+                    class="post-tags"
+                >
+                  <el-tag
+                      v-for="tag in post.tagList"
+                      :key="`post-${post.postId}-tag-${tag.tagId}`"
+                      size="small"
+                      effect="dark"
+                  >
+                    {{ tag.tagName }}
+                  </el-tag>
+                </div>
               </div>
             </div>
 
@@ -249,6 +294,18 @@ function goBack() {
               <span>{{ (selectedPost as PostItem).categoryName }}</span>
               <span>{{ getStatusText((selectedPost as PostItem).status) }}</span>
               <span>{{ formatDate((selectedPost as PostItem).regDate) }}</span>
+            </div>
+            <div
+                v-if="(selectedPost as PostItem).tagList && (selectedPost as PostItem).tagList.length"
+                class="selected-post-tags"
+            >
+              <el-tag
+                  v-for="tag in (selectedPost as PostItem).tagList"
+                  :key="`selected-tag-${tag.tagId}`"
+                  effect="dark"
+              >
+                {{ tag.tagName }}
+              </el-tag>
             </div>
           </div>
 
@@ -286,6 +343,34 @@ function goBack() {
                   <el-option label="비공개" value="PRIVATE" />
                   <el-option label="예약됨" value="SCHEDULED" />
                 </el-select>
+              </el-form-item>
+
+              <el-form-item label="태그" class="bold-text tags-form-item">
+                <div class="tag-input-wrapper">
+                  <el-input
+                      v-model="newTag"
+                      placeholder="태그를 입력 후 Enter 또는 추가 버튼을 눌러주세요"
+                      clearable
+                      @keyup.enter.native="addTag"
+                  />
+                  <el-button
+                      type="success"
+                      plain
+                      @click="addTag"
+                  >
+                    추가
+                  </el-button>
+                </div>
+                <div v-if="state.post.tagList.length" class="tag-list">
+                  <el-tag
+                      v-for="(tag, index) in state.post.tagList"
+                      :key="`modify-tag-${tag.tagName}-${index}`"
+                      closable
+                      @close="removeTag(index)"
+                  >
+                    {{ tag.tagName }}
+                  </el-tag>
+                </div>
               </el-form-item>
 
               <el-form-item label="내용" class="bold-text">
@@ -462,6 +547,26 @@ function goBack() {
   color: #ccc;
   line-height: 1.4;
   font-size: 14px;
+}
+
+.post-tags,
+.selected-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag-input-wrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .selected-post-info {

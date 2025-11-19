@@ -1,3 +1,5 @@
+import type PostTag from "../../tag/data/PostTag.ts";
+
 export default class PostItem{
     public postId: number = 0
     public title: string = ''
@@ -6,4 +8,5 @@ export default class PostItem{
     public categoryName: string= ''
     public status: string= ''
     public regDate: string = ''
+    public tagList: PostTag[] = []
 }

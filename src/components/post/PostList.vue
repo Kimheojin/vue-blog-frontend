@@ -84,14 +84,28 @@ function handlePageChange(page: number) {
               </el-link>
             </div>
 
-            <div class="post-content-preview">
-              {{ getMarkdownPreview(post.content, 200) }}
-            </div>
+          <div class="post-content-preview">
+            {{ getMarkdownPreview(post.content, 200) }}
           </div>
 
-          <div class="post-meta">
-            <span class="post-author opacity-blur">작성자 : {{ post.memberName }}</span>
-            <span class="post-date opacity-blur">  |  작성 날짜 : {{ formatDate(post.regDate) }}</span>
+          <div
+              v-if="post.tagList && post.tagList.length"
+              class="post-tags"
+          >
+            <el-tag
+                v-for="tag in post.tagList"
+                :key="`post-${post.postId}-tag-${tag.tagId}`"
+                size="small"
+                effect="plain"
+            >
+              {{ tag.tagName }}
+            </el-tag>
+          </div>
+        </div>
+
+        <div class="post-meta">
+          <span class="post-author opacity-blur">작성자 : {{ post.memberName }}</span>
+          <span class="post-date opacity-blur">  |  작성 날짜 : {{ formatDate(post.regDate) }}</span>
           </div>
         </div>
       </div>
@@ -188,6 +202,13 @@ function handlePageChange(page: number) {
   font-size: 16px;
   margin-top: 12px;
   margin-bottom: 32px;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .category-link {
