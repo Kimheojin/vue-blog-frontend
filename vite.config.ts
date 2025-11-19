@@ -4,6 +4,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import vue from "@vitejs/plugin-vue";
+// import basicSsl from "@vitejs/plugin-basic-ssl";
 
 export default defineConfig({
     plugins: [
@@ -14,9 +15,10 @@ export default defineConfig({
             resolvers: [ElementPlusResolver()],
         }),
         vue(),
+        // basicSsl(),
     ],
     server: {
-        host: "localhost",
-        port: 1000,
+        // https: true,
+        port: 5173,
     },
 });

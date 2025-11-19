@@ -188,6 +188,19 @@ function goBack() {
               <div class="post-content-preview">
                 {{ post.content.substring(0, 150) }}{{ post.content.length > 150 ? '...' : '' }}
               </div>
+
+              <div
+                  v-if="post.tagList && post.tagList.length"
+                  class="post-tags"
+              >
+                <el-tag
+                    v-for="tag in post.tagList"
+                    :key="`delete-tag-${post.postId}-${tag.tagId}`"
+                    size="small"
+                >
+                  {{ tag.tagName }}
+                </el-tag>
+              </div>
             </div>
           </div>
 
@@ -349,6 +362,13 @@ function goBack() {
   padding: 15px;
   border-radius: 8px;
   border: 1px solid #333;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .pagination-container {
