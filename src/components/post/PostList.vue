@@ -211,6 +211,15 @@ function handlePageChange(page: number) {
   margin-top: 12px;
 }
 
+.post-tags :deep(.el-tag) {
+  color: #e2e8f0;
+  background-color: transparent;
+  border: 1px solid #475569;
+  opacity: 0.8;
+  padding: 2px 8px;
+  font-size: 17px;
+}
+
 .category-link {
   margin-left: auto;
 }
