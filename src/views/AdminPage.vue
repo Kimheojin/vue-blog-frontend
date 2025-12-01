@@ -69,6 +69,10 @@ function goToImageList() {
 function goToTagManage() {
   router.push('/admin/tag');
 }
+
+function goToSeoSync() {
+  router.push('/admin/seo/mongo-sync');
+}
 </script>
 
 <template>
@@ -113,6 +117,12 @@ function goToTagManage() {
           <div class="admin-actions">
             <div class="admin-title">태그 관련</div>
             <el-button plain @click="goToTagManage">태그 관리</el-button>
+          </div>
+
+
+          <div class="admin-actions">
+            <div class="admin-title">SEO 데이터 관리</div>
+            <el-button plain @click="goToSeoSync">Mongo Sync 실행</el-button>
           </div>
 
 

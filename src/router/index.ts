@@ -19,6 +19,7 @@ import ImageDelete from "../views/admin/image/ImageDelete.vue";
 import ImageList from "../views/admin/image/ImageList.vue";
 import ImageUpload from "../views/admin/image/ImageUpload.vue";
 import TagAdmin from "../views/admin/tag/TagAdmin.vue";
+import SeoMongoSync from "../views/admin/seo/SeoMongoSync.vue";
 
 const routes = [
 
@@ -98,6 +99,10 @@ const routes = [
     {
         path: '/admin/tag',
         component: TagAdmin
+    },
+    {
+        path: '/admin/seo/mongo-sync',
+        component: SeoMongoSync
     }
 ];
 
