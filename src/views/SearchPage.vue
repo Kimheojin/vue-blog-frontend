@@ -171,10 +171,10 @@ onMounted(() => {
 
 .search-page {
     font-family: "NanumBarunPen", sans-serif;
-    padding: 24px;
-    background-color: #2f2f2f;
+    margin-bottom: 64px;
     border-radius: 16px;
     min-height: 500px;
+    
 }
 
 .search-header {
@@ -184,7 +184,7 @@ onMounted(() => {
 
 .page-title {
     font-size: 32px;
-    margin: 0;
+    margin-bottom: 12px;
 }
 
 .page-subtitle {
@@ -215,7 +215,7 @@ onMounted(() => {
 .results-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .search-result {
