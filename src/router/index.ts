@@ -20,6 +20,7 @@ import ImageList from "../views/admin/image/ImageList.vue";
 import ImageUpload from "../views/admin/image/ImageUpload.vue";
 import TagAdmin from "../views/admin/tag/TagAdmin.vue";
 import SeoMongoSync from "../views/admin/seo/SeoMongoSync.vue";
+import SearchPage from "../views/SearchPage.vue";
 
 const routes = [
 
@@ -103,6 +104,10 @@ const routes = [
     {
         path: '/admin/seo/mongo-sync',
         component: SeoMongoSync
+    },
+    {
+        path: '/search',
+        component: SearchPage
     }
 ];
 

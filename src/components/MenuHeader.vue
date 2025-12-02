@@ -3,8 +3,8 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const goHome = () => {
-  router.push("/");
+const goToSearch = () => {
+  router.push("/search");
 };
 
 const goToAboutMe = () => {
@@ -19,7 +19,7 @@ const goToAboutMe = () => {
         <img src="/HeoJin.png" alt="HeoJin" class="logo-image" />
       </div>
       <div class="buttons-container">
-        <el-link class="nav-link blog-title" :underline="false" @click="goHome">허진 블로그</el-link>
+        <el-link class="nav-link blog-title" :underline="false" @click="goToSearch">허진 블로그</el-link>
         <el-link class="nav-link about-link" :underline="false" @click="goToAboutMe">About me</el-link>
       </div>
     </div>
