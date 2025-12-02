@@ -114,6 +114,7 @@ async function handleLogin() {
   text-align: center;
   font-size: 28px;
   margin-bottom: 20px;
+  font-weight: 700;
 }
 .login-page {
   display: flex;
@@ -140,5 +141,11 @@ async function handleLogin() {
 }
 .form-group{
   margin-bottom: 16px;
+}
+:deep(.form-group + .form-group) {
+  margin-top: 12px;
+}
+:deep(.form-group .el-input + .el-input) {
+  margin-top: 12px;
 }
 </style>
