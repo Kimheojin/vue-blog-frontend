@@ -1,32 +1,87 @@
-# 블로그 프론트엔드
-Vue 3 + TypeScript 기반 웹 애플리케이션
+# Vue 블로그 프론트엔드
 
-## 링크
-- **백엔드 API**: [Blog API 문서](https://heojin1109.github.io/2025.07.04.htm)
-
-## 배포 환경
-- **호스팅 플랫폼**: Vercel
-- **빌드 도구**: Vite 6.2.0
-- **배포 방식**: GitHub Branch 연동, 자동 배포
-
-## 프로젝트 도식도
-![블로그 도식도](https://res.cloudinary.com/dtrxriyea/image/upload/v1751883877/markdonw/sqi0fzzq6e5ln3eako52.png)
+- CSR 구조 블로그 프론트 엔드
 
 ## 주요 기능
-- 관리자 전용 페이지 구현
-- marked 라이브러리 활용, 마크다운 -> HTML 변환
-- TSyringe 활용, HTTP 서비스 계층 분리 및 재사용
 
-## 가술 스택
+### 보안 및 인증 아키텍처
 
-### Frontend
-- Vue 3.5.13 + TypeScript 5.7.2
-- Vite 6.2.0
-- Vue Router 4.5.0
+**HttpOnly Cookie** 기반의 인증 시스템을 구축
 
-### UI 라이브러리
-- Element Plus 2.9.7
+- **JWT 전략**: 클라이언트 사이드 스크립트에서 토큰 접근이 불가능하도록 설정.
+- **자동 인증 관리**: Axios의 `withCredentials: true` 설정을 통해 브라우저가 쿠키를 안전하게 관리하고 모든 API 요청에 자동으로 포함하도록 구성
+- 프론트엔드 코드 내에서 인증 정보를 직접 다루지 않음
 
-### 주요 라이브러리
-- Marked 15.0.12, Axios 1.8.4
-- TSyringe 4.9.1, DOMPurify 3.2.5 등
+### 마크다운 렌더링 시스템
+
+`Marked`와 `Highlight.js`를 결합, 관련 기능 구현
+
+- **렌더링 파이프라인**: GFM 및 Line Breaks 옵션이 적용된 실시간 HTML 변환 로직을 구축했다.
+- **최적화된 시각화**:
+    - `Highlight.js`를 통한 자동 언어 감지 및 문법 강조 적용.
+    - `github-markdown-css` 기반의 커스텀 테마(다크 모드 최적화) 적용.
+    - 가독성 향상을 위해 css 조정
+
+### 공통 에러 처리
+
+일관된 사용자 피드백을 위해 에러 처리 메커니즘을 표준화
+
+- **HttpError 클래스**: 백엔드(Spring)의 `ErrorResponse` 규격에 맞춰 네트워크 에러를 표준화된 형식으로 래핑
+- **검증 오류 자동 파싱**: 서버 측 유효성 검사 실패 내역을 자동으로 해석하여 UI에 즉각 반영하는 로직을 구현
+- **UI 통합**: 비즈니스 로직과 UI 피드백을 연결
+
+## 구현 기능
+
+### 일반 사용자 기능
+
+- **게시글 조회**: 카테고리, 태그별 조회 및 전체 글 보기.
+- **댓글 기능**: 댓글 조회, 작성 및 대댓글 작성. 작성자는 비밀번호 확인을 통해 자신의 댓글을 안전하게 삭제 가능.
+- **검색**: 전용 검색 기능을 통한 콘텐츠 찾기.
+- **소개 페이지**: 작성자 프로필 페이지.
+
+### 관리자 기능
+
+- **대시보드 및 인증**: 보안 로그인 및 관리자 전용 영역.
+- **콘텐츠 관리**: 게시글에 대한 완전한 CRUD (작성, 조회, 수정, 삭제) 기능.
+- **카테고리 및 태그 관리**: 콘텐츠를 체계적으로 정리하기 위한 기능.
+- **댓글 관리**: 모든 댓글 조회 및 부적절한 콘텐츠 삭제(관리자 권한).
+- **미디어 관리**: 이미지 업로드, 조회 및 삭제.
+- **SEO 및 동기화**: 검색 및 SEO 최적화를 위한 데이터 동기화 도구 (예: MongoDB로의 데이터 동기화).
+
+## 기술 스택
+
+- **Core**: Vue 3 (Composition API), TypeScript, Vite
+- **UI**: Element Plus
+- **Architecture**: TSyringe (Dependency Injection)
+- **Network**: Axios
+- **Content**: Marked, Highlight.js
+
+## 프로젝트 아키텍처
+
+```
+src/
+├── components/   # UI 컴포넌트
+├── composables/  # Vue 컴포저블
+├── entity/       # 데이터 모델 및 DTO (요청/응답/데이터)
+├── http/         # Axios 설정 및 에러 처리
+├── repository/   # 데이터 접근 계층 (API 호출)
+├── router/       # Vue Router 설정
+├── service/      # 비즈니스 로직 계층 (TSyringe 사용)
+└── views/        # 페이지 뷰 (관리자 및 일반 사용자)
+```
+
+**아키텍처 특징:**
+
+- **의존성 주입**
+    - Service와 Repository는 `TSyringe`를 통해 관리
+- **타입화된 엔티티**
+    - API 응답은 `class-transformer`를 사용하여 자동으로 TypeScript 클래스 인스턴스로 변환
+
+## 관련 링크
+
+- 백엔드 코드 주소
+- 등등
+
+## 프로젝트 도식도
+
+![프로젝트 도식도](https://res.cloudinary.com/dtrxriyea/image/upload/v1751883877/markdonw/sqi0fzzq6e5ln3eako52.png)
